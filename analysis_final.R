@@ -32,9 +32,16 @@ fips_codes <- fips_codes %>%
 rent_w_fips <- left_join(rent_price, fips_codes, by = "RegionName")
 
 # attaches crime df to the rent df with the FIPS codes for plotting
-crime_vs_rent_2016 <- left_join(rent_w_fips, crime_rates_county, by = "county_name")
-View(crime_vs_rent_2016)
+crime_vs_rent <- left_join(rent_w_fips, crime_rates_county, by = "county_name")
+View(crime_vs_rent)
 
+#--------------------------QUESTION 1-----------------------------#
+# What is the most common crime per each category of rent price? (for 2016)
+
+crime_vs_rent <- crime_vs_rent %>% 
+     filter(year ==)
+
+#-----------------------------------------------------------------#
 
 # for plotting based off counties // NOT COMPLETE // USES OLD VARIABLES 
 View(crime_vs_rent_2016)
