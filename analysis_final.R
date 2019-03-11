@@ -5,7 +5,7 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
+#setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
 crime_rates_county <- read.csv("crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -68,4 +68,6 @@ ggplot(data = crime_vs_rent_map_2016) +
      xlab("") +
      ylab("") +
      coord_quickmap()
+
+
 
