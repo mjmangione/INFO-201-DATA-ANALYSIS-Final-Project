@@ -26,16 +26,6 @@ crime_rates_county <- crime_rates_county %>%
      select(county_name, crime_rate_per_100000, index, MURDER, RAPE, ROBBERY, AGASSLT, 
             BURGLRY, LARCENY, MVTHEFT, ARSON, population, FIPS_ST)
 
-# attaches FIPS codes to the rental info
-#fips_codes <- readxl::read_xlsx("fips_codes.xlsx") 
-#colnames(fips_codes) <- c("summary","state_code", "county_code", "ignore1", "ignore2", "ignore3", "RegionName")
-#fips_codes <- fips_codes %>% 
-#     mutate(fips = (paste0(state_code, county_code))) %>% 
-#     select
-
-
-#rent_w_fips <- left_join(rent_price, fips_codes, by = "RegionName")
-
 # attaches crime df to the rent df with the FIPS codes for plotting
 crime_vs_rent <- left_join(rent_price, crime_rates_county, by = "county_name")
 View(crime_vs_rent)
