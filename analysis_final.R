@@ -5,7 +5,7 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
+# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
 crime_rates_county <- read.csv("crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -38,7 +38,32 @@ crime_rates_county <- crime_rates_county %>%
 
 # attaches crime df to the rent df with the FIPS codes for plotting
 crime_vs_rent <- left_join(rent_price, crime_rates_county, by = "county_name")
-#View(crime_vs_rent)
+View(crime_vs_rent)
+
+#--------------------------QUESTION 1-----------------------------#
+# How do crime rates affect rental prices after 2016 in areas of high and low crime.
+
+# Creates a data frame for the top 5 highest counties by crime rate for 2016
+high_crimes <- crime_vs_rent %>%
+  arrange(-crime_rate_per_100000) %>%
+  head(n = 39) %>%
+  select(year, RegionName, State, rent_value, crime_rate_per_100000)
+View(high_crimes)
+
+# Creates a data frame for the lowest 5 counties by crime rate for 2016
+low_crimes <- crime_vs_rent %>%
+  arrange(crime_rate_per_100000) %>%
+  head(n=35) %>%
+  select(year, RegionName, State, rent_value, crime_rate_per_100000)
+View(low_crimes)
+
+# I think for visualizations for Q1, we can simply display the two above data frames. Analysis can then be intertwined between these two displays
+# If we want we can also create a graph for each data frame using ggplot, something like this in the server:
+# p <- ggplot(data = high_crimes) +
+# geom_point(mapping = aes(x = rent_value , y = crime_rate_per_100000, color = RegionName))
+
+# and the same thing for low crimes. These two data frames are almost exactly the same in size and thus can be compared very easily. 
+#-----------------------------------------------------------------#
 
 #--------------------------QUESTION 2-----------------------------#
 # What is the most common crime per each category of rent price? (for 2016)
