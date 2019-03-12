@@ -5,9 +5,9 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
-crime_rates_county <- read.csv("crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
-rent_price <- read.csv("county_median_rental_price.csv", stringsAsFactors = FALSE)
+setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
+crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
+rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 
 #organizes/gathers yearly rent prices
 rent_price <- rent_price %>%
@@ -36,14 +36,12 @@ high_crimes <- crime_vs_rent %>%
   arrange(-crime_rate_per_100000) %>%
   head(n = 39) %>%
   select(year, RegionName, State, rent_value, crime_rate_per_100000)
-View(high_crimes)
 
 # Creates a data frame for the lowest 5 counties by crime rate for 2016
 low_crimes <- crime_vs_rent %>%
   arrange(crime_rate_per_100000) %>%
   head(n=35) %>%
   select(year, RegionName, State, rent_value, crime_rate_per_100000)
-View(low_crimes)
 
 # I think for visualizations for Q1, we can simply display the two above data frames. Analysis can then be intertwined between these two displays
 # If we want we can also create a graph for each data frame using ggplot, something like this in the server:
@@ -69,14 +67,15 @@ crime_vs_rent_2016 <- mutate(crime_vs_rent_2016, rent_category = cut(rent_value,
                breaks, labels = c("$0 to $1000", "$1000 to $1500", "$1500 to $2000", "$2000 to $2500", "$2500+")))
 
 # df great for a interactive plot (select the inputted crime)
-crime_trends_vs_rent <- crime_vs_rent_2016 %>% 
-     summarize(ave_murder = mean_NA(MURDER/population), ave_rape = mean_NA(RAPE/population), ave_robbery = mean_NA(ROBBERY/population),
-               ave_agrasslt = mean_NA(AGASSLT/population), ave_burg = mean_NA(BURGLRY/population), ave_larc = mean_NA(LARCENY/population),
-               ave_gta = mean_NA(MVTHEFT/population), ave_arson = mean_NA(ARSON/population)) 
-View(crime_trends_vs_rent)
+crime_trends_vs_rent <- crime_vs_rent_2016 %>%
+     group_by(rent_value) %>% 
+     summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
+               `Aggravated Assault` = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
+               `Car Theft` = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
+
 ggplot(data = crime_trends_vs_rent) +
-     geom_smooth(mapping = aes(x = rent_value, y = ave_agrasslt)) +
-     geom_point(mapping = aes(x = rent_value, y = ave_agrasslt))
+     geom_smooth(mapping = aes(x = rent_value, y = Murder)) +
+     geom_point(mapping = aes(x = rent_value, y = Murder))
      
 #-- below is the per category stuff --#
 # methodology for finding the most popular crime:
@@ -102,7 +101,6 @@ fav_crime_by_rent <- left_join(rearranged_crimes, ave_crime, by = "crime") %>%
      mutate(crime_diff = (crime_by_pop - average)/stddev) %>%
      group_by(rent_category) %>% 
      filter(crime_diff == max(crime_diff))
-View(fav_crime_by_rent)
 
 #-----------------------------------------------------------------#
 
@@ -112,9 +110,8 @@ county_map <- map_data('county')
 county_map <- county_map %>% 
      mutate(State = state.abb[match(toTitleCase(county_map$region), state.name)]) %>% 
      mutate(RegionName = paste(toTitleCase(county_map$subregion),"County"))
-View(county_map)
+
 crime_vs_rent_map_2016 <- left_join(crime_vs_rent_2016, county_map, by = c("State", "RegionName"))
-View(crime_vs_rent_map_2016)
 
 ggplot(data = crime_vs_rent_map_2016) +
      geom_polygon(aes(x = long, y = lat, group = group, fill = rent_category)) +
