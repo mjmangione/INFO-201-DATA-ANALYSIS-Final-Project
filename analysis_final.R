@@ -5,7 +5,7 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
+setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
 crime_rates_county <- read.csv("crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -19,7 +19,6 @@ rent_price <- rent_price %>%
      filter(!is.na(rent)) %>% 
      group_by(year, RegionName, State, county_name) %>% 
      summarize(rent_value = median(rent))
-View(rent_price)
 
 # Creates crime data frame  
 crime_rates_county <- crime_rates_county %>%
@@ -71,10 +70,10 @@ crime_vs_rent_2016 <- mutate(crime_vs_rent_2016, rent_category = cut(rent_value,
 
 # df great for a interactive plot (select the inputted crime)
 crime_trends_vs_rent <- crime_vs_rent_2016 %>% 
-     group_by(rent_value) %>% 
      summarize(ave_murder = mean_NA(MURDER/population), ave_rape = mean_NA(RAPE/population), ave_robbery = mean_NA(ROBBERY/population),
                ave_agrasslt = mean_NA(AGASSLT/population), ave_burg = mean_NA(BURGLRY/population), ave_larc = mean_NA(LARCENY/population),
                ave_gta = mean_NA(MVTHEFT/population), ave_arson = mean_NA(ARSON/population)) 
+View(crime_trends_vs_rent)
 ggplot(data = crime_trends_vs_rent) +
      geom_smooth(mapping = aes(x = rent_value, y = ave_agrasslt)) +
      geom_point(mapping = aes(x = rent_value, y = ave_agrasslt))
