@@ -1,3 +1,7 @@
+# Our server function, which operates as half of our shiny app 
+# it is broken into 5 sections, each of which correspond to a particular tab of our app,
+# defined in the user interface.
+
 library(shiny)
 source("analysis_final.R")
 

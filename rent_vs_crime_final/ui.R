@@ -1,3 +1,7 @@
+# made by Matt, David, and Amanda
+# this operates as the user interface to our app, which corresponds to the server.R file.
+# it is divided by comments separating each tab of our a
+
 source("analysis_final.R")
 library(shiny)
 library(shinythemes)  
@@ -83,7 +87,7 @@ navbarPage(theme = shinytheme("flatly"), "Rent vs Crime",
                                                   htmlOutput("plot2_text"))
                                               )
                                          ),
-                                tabPanel("Analysis", h4(class = "header", "Introduction"),
+                                tabPanel("Analysis", h4(class = "header", "Analysis"),
                                 fluidRow(
                                      column(1), column(10, htmlOutput("q2_analysis")), column(1)
                                 ))

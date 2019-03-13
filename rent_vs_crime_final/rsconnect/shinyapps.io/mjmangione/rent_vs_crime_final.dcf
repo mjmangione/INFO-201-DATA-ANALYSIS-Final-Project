@@ -5,8 +5,8 @@ account: mjmangione
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 786342
-bundleId: 1937367
+bundleId: 1937430
 url: https://mjmangione.shinyapps.io/rent_vs_crime_final/
-when: 1552504759.93278
+when: 1552505901.31386
 asMultiple: FALSE
 asStatic: FALSE
