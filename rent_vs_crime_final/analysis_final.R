@@ -1,11 +1,10 @@
-
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(usmap)
 library(tools)
 
-setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
+# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -70,8 +69,8 @@ crime_vs_rent_2016 <- mutate(crime_vs_rent_2016, rent_category = cut(rent_value,
 crime_trends_vs_rent <- crime_vs_rent_2016 %>%
      group_by(rent_value) %>% 
      summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
-               `Aggravated Assault` = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
-               `Car Theft` = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
+               Aggravated_Assault = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
+               Car_Theft = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
 
 ggplot(data = crime_trends_vs_rent) +
      geom_smooth(mapping = aes(x = rent_value, y = Murder)) +
@@ -103,7 +102,6 @@ fav_crime_by_rent <- left_join(rearranged_crimes, ave_crime, by = "crime") %>%
      filter(crime_diff == max(crime_diff)) %>% 
      select(Rent = rent_category, `Most Popular Crime` = crime) %>% 
      arrange(Rent)
-View(fav_crime_by_rent)
 #-----------------------------------------------------------------#
 
 # below is the county map for plotting stuff
