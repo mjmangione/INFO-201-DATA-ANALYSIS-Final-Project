@@ -1,11 +1,10 @@
-
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(usmap)
 library(tools)
 
-setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
+# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 
