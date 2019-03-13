@@ -1,9 +1,13 @@
 source("analysis_final.R")
 library(shiny)
+#<<<<<<< HEAD
+
+#=======
 library(shinythemes)  
 
-crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car Theft", "Arson")
+crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
 year_range <- range(2010:2019)
+#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 
 navbarPage(theme = shinytheme("flatly"), "Rent vs Crime", 
            tabPanel("Introduction", h2(class = "header", "Rent and Crime by County"),
@@ -105,14 +109,18 @@ navbarPage(theme = shinytheme("flatly"), "Rent vs Crime",
                                                         max = population_range[2],
                                                         value = population
                                                    ),
-                                                   selectInput("crime_types", "Type of Crime:", crime_list)
+                                                   sliderInput("crime_rates", 
+                                                               label= "Crime Rates Per 100,000 People",
+                                                               min = crime_rate_per_100000_range[1],
+                                                               max= crime_rate_per_100000_range[2],
+                                                               value = population)
                                               ),
                                               mainPanel(
                                                   tableOutput("table_city_vs_crimes")
                                               )
                                          )
                                 ),
-                                tabPanel("Analysis")
+                                tabPanel("Analysis", textOutput("q3analysis"))
                     )
                     
            ),
