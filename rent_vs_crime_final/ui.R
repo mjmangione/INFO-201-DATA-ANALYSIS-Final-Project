@@ -1,24 +1,48 @@
 source("analysis_final.R")
 library(shiny)
+<<<<<<< HEAD
 crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
+=======
+crime_list <- c("Murder", "Rape", "Robbery", "Aggravated Assault", "Burglary", "Larceny", "Car Theft", "Arson")
+year_range <- range(2010:2019)
+>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
 
 navbarPage("Rent vs Crime 2",
            tabPanel("Question 1",
-                    sidebarLayout(
-                         sidebarPanel(
-                              radioButtons("plotType", "Plot type",
-                                           c("Scatter"="p", "Line"="l")
-                              )
-                         ),
-                         mainPanel(
+                    h3("How does high or low crime affect rent prices in those areas?"),
                               tabsetPanel(type = "tabs",
-                                          tabPanel("about", textOutput("q1text")),
-                                          tabPanel("high crime", tableOutput("table_high")),
-                                          tabPanel("low crime", tableOutput("table_low"))
+                                          tabPanel("Intro", textOutput("q1text")),
+                                          tabPanel("Table 1", 
+                                                   sidebarLayout(
+                                                     sidebarPanel(
+                                                       sliderInput(inputId = "years", label = "Years", 
+                                                                   min = 2010, max = 2019, value = year_range, sep = "")
+                                                     ),
+                                                      mainPanel (
+                                                        h4("Counties with High Crime Rates"),
+                                                        tableOutput("table_high"), 
+                                                        textOutput("table_high_caption")
+                                                      )
+                                                   )
+                                          ),
+                                          tabPanel("Table 2", 
+                                                  sidebarLayout(
+                                                    sidebarPanel(
+                                                       sliderInput(inputId = "years", label = "Years", 
+                                                                   min = 2010, max = 2019, value = year_range, sep = "")
+                                                    ),
+                                              mainPanel (
+                                                   h4("Counties with Low Crime Rates"), 
+                                                   tableOutput("table_low"), 
+                                                   textOutput("table_low_caption")
+                                              )
+                                              )
+                                          ),
+                                          tabPanel("Analysis", htmlOutput("analysistext"))
                               )
-                         )
-                    )
-           ),
+                              ),
+                    
+           
 #-------------------------------------------------------------------------------------------------
            tabPanel("Question2",
                     sidebarLayout(
