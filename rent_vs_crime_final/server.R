@@ -152,7 +152,7 @@ function(input, output, session) {
                crime will be highest for counties with a lower median rent value, and will decrease as the rent increase. 
                However, this does not account for counties with a larger wealth disparty, like many cities, in which there will likely
                be a lot of crime and also have a large median rent.
-               </p>"
+               <br><br></p>"
      })
      
      output$plot_crime <- renderPlot({
