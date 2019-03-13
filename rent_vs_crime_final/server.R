@@ -1,11 +1,11 @@
 library(shiny)
 
 source("analysis_final.R")
-<<<<<<< HEAD
+#<<<<<<< HEAD
 
-=======
+#=======
 # setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
->>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
+#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
 
 function(input, output, session) {
      output$plot <- renderPlot({
@@ -108,7 +108,7 @@ function(input, output, session) {
           p
      })
      
-<<<<<<< HEAD
+#<<<<<<< HEAD
      output$q1text <- renderText({
           p <- "This is output generated text. Fill in later"
           p
@@ -133,7 +133,7 @@ function(input, output, session) {
       
 }
 
-=======
+#=======
 
-}
->>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
+#}
+#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55

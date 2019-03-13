@@ -1,11 +1,11 @@
 source("analysis_final.R")
 library(shiny)
-<<<<<<< HEAD
+#<<<<<<< HEAD
 crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
-=======
+#=======
 crime_list <- c("Murder", "Rape", "Robbery", "Aggravated Assault", "Burglary", "Larceny", "Car Theft", "Arson")
 year_range <- range(2010:2019)
->>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
+#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
 
 navbarPage("Rent vs Crime 2",
            tabPanel("Question 1",
