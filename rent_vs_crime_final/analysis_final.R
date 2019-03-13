@@ -4,6 +4,7 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
+<<<<<<< HEAD
 #<<<<<<< HEAD
 #<<<<<<< HEAD:analysis_final.R
 #<<<<<<< HEAD
@@ -14,13 +15,10 @@ library(tools)
 #=======
 # setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
 #>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
+=======
+>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
-#=======
-#setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
-crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
-rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
-#>>>>>>> c16e7cc3f06341446be2902e3a7b37b5b254dc1a:rent_vs_crime_final/analysis_final.R
 
 #organizes/gathers yearly rent prices
 rent_price <- rent_price %>%
@@ -83,8 +81,8 @@ crime_vs_rent_2016 <- mutate(crime_vs_rent_2016, rent_category = cut(rent_value,
 crime_trends_vs_rent <- crime_vs_rent_2016 %>%
      group_by(rent_value) %>% 
      summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
-               `Aggravated Assault` = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
-               `Car Theft` = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
+               Aggravated_Assault = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
+               Car_Theft = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
 
 ggplot(data = crime_trends_vs_rent) +
      geom_smooth(mapping = aes(x = rent_value, y = Murder)) +
@@ -101,9 +99,9 @@ ggplot(data = crime_trends_vs_rent) +
 
 crime_per_category <- crime_vs_rent_2016 %>% 
      group_by(rent_category) %>% 
-     summarize(ave_murder = mean_NA(MURDER/population), ave_rape = mean_NA(RAPE/population), ave_robbery = mean_NA(ROBBERY/population),
-               ave_agrasslt = mean_NA(AGASSLT/population), ave_burg = mean_NA(BURGLRY/population), ave_larc = mean_NA(LARCENY/population),
-               ave_gta = mean_NA(MVTHEFT/population), ave_arson = mean_NA(ARSON/population))
+     summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
+               Aggravated_Assault = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
+               `Car Theft` = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
 
 rearranged_crimes <- crime_per_category %>% 
      gather(key = crime, value = crime_by_pop, -rent_category) 
@@ -113,26 +111,9 @@ ave_crime <- rearranged_crimes %>%
 fav_crime_by_rent <- left_join(rearranged_crimes, ave_crime, by = "crime") %>% 
      mutate(crime_diff = (crime_by_pop - average)/stddev) %>%
      group_by(rent_category) %>% 
-     filter(crime_diff == max(crime_diff))
-
-#-----------------------------------------------------------------#
-
-# below is the county map for plotting stuff
-# along with an example for plotting a map.
-county_map <- map_data('county')
-county_map <- county_map %>% 
-     mutate(State = state.abb[match(toTitleCase(county_map$region), state.name)]) %>% 
-     mutate(RegionName = paste(toTitleCase(county_map$subregion),"County"))
-
-crime_vs_rent_map_2016 <- left_join(crime_vs_rent_2016, county_map, by = c("State", "RegionName"))
-
-ggplot(data = crime_vs_rent_map_2016) +
-     geom_polygon(aes(x = long, y = lat, group = group, fill = rent_category)) +
-     scale_fill_manual(values=c("#b2182b", "#ef8a62", "#fddbc7", "#d1e5f0", "#67a9cf", "#2166ac")) +
-     ggtitle("Percent Difference in Forest Levels (1992 - 2016)") +
-     xlab("") +
-     ylab("") +
-     coord_quickmap()
+     filter(crime_diff == max(crime_diff)) %>% 
+     select(Rent = rent_category, `Most Popular Crime` = crime) %>% 
+     arrange(Rent)
 
 #---------------------------QUESTION 3------------------------------------#
 #How do cities compare to the rest of the US in terms of crime?

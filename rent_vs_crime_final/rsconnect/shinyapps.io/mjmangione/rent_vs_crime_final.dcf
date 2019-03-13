@@ -1,0 +1,12 @@
+name: rent_vs_crime_final
+title: rent_vs_crime_final
+username:
+account: mjmangione
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 786342
+bundleId: 1935773
+url: https://mjmangione.shinyapps.io/rent_vs_crime_final/
+when: 1552464584.90907
+asMultiple: FALSE
+asStatic: FALSE
