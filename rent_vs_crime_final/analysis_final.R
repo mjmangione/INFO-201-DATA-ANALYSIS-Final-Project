@@ -4,7 +4,6 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -89,7 +88,7 @@ crime_per_category <- crime_vs_rent_2016 %>%
      group_by(rent_category) %>% 
      summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
                Aggravated_Assault = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
-               Car_Theft = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
+               `Car Theft` = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
 
 rearranged_crimes <- crime_per_category %>% 
      gather(key = crime, value = crime_by_pop, -rent_category) 
@@ -102,22 +101,79 @@ fav_crime_by_rent <- left_join(rearranged_crimes, ave_crime, by = "crime") %>%
      filter(crime_diff == max(crime_diff)) %>% 
      select(Rent = rent_category, `Most Popular Crime` = crime) %>% 
      arrange(Rent)
-#-----------------------------------------------------------------#
 
-# below is the county map for plotting stuff
-# along with an example for plotting a map.
-county_map <- map_data('county')
-county_map <- county_map %>% 
-     mutate(State = state.abb[match(toTitleCase(county_map$region), state.name)]) %>% 
-     mutate(RegionName = paste(toTitleCase(county_map$subregion),"County"))
+#---------------------------QUESTION 3------------------------------------#
+#How do cities compare to the rest of the US in terms of crime?
 
-crime_vs_rent_map_2016 <- left_join(crime_vs_rent_2016, county_map, by = c("State", "RegionName"))
+#Creates a data frame analyzing highly populated counties and low populated counties
+colnames(crime_vs_rent)[8:15] <- c("Murder","Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
+population_vs_crime <- crime_vs_rent %>%
+  mutate(
+    high_population = (population > 1500000),
+    low_population = (population < 1500000),
+    total_crime = Murder + Rape + Robbery + Aggravated_Assault + Burglary + Larceny + Car_Theft + Arson) %>%
+ gather(type_of_crime, frequency, Murder:Arson) %>%
+  select(-rent_value) %>% 
+  filter(year == "2016")
 
-ggplot(data = crime_vs_rent_map_2016) +
-     geom_polygon(aes(x = long, y = lat, group = group, fill = rent_category)) +
-     scale_fill_manual(values=c("#b2182b", "#ef8a62", "#fddbc7", "#d1e5f0", "#67a9cf", "#2166ac")) +
-     ggtitle("Percent Difference in Forest Levels (1992 - 2016)") +
-     xlab("") +
-     ylab("") +
-     coord_quickmap()
+#Used for table in shiny, if total crime column is used when the data frame is gathered it looks weird and 
+#doesn't align right
+population_vs_types__of_crime <- population_vs_crime %>%
+  select(-total_crime)
 
+#filters out duplicates of counties and I can find the range of population 
+population <- crime_vs_rent %>% 
+  filter(year == "2016")
+
+population_range <- range(population$population, na.rm = TRUE)
+
+ 
+#find the top 5 populated counties 
+top_counties <- crime_vs_rent %>%
+  select(-rent_value) %>%
+  mutate(
+    total_crime =Murder + Rape + Robbery + Aggravated_Assault + Burglary + Larceny + Car_Theft + Arson) %>%
+    filter( year == "2016")%>%
+  gather(
+    type_of_crime, amount_of_crime, Murder:Arson
+  ) %>%
+  group_by(RegionName)%>%
+  arrange(desc(population))%>%
+  head(40)
+
+#finds the top 5 lowest populated counties 
+bottom_counties <- crime_vs_rent %>%
+  select(-rent_value) %>%
+  mutate(
+    total_crime =Murder + Rape + Robbery + Aggravated_Assault + Burglary + Larceny + Car_Theft + Arson) %>%
+  filter( year == "2016")%>%
+  gather(
+    type_of_crime, amount_of_crime, Murder:Arson
+  ) %>%
+  filter(population == min(population)) %>%
+  arrange(population) %>%
+  head(40)
+  
+  
+  
+#ggplot for Top 5 highly populated counties 
+top_5 <- ggplot(top_counties) +
+  geom_col(
+    mapping = aes(x= county_name, y = total_crime,  fill= type_of_crime)
+  )  +
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+  xlab("County Names") +
+  ylab("Total Crime") +
+  guides(fill=guide_legend(title="Type Of Crime")) +
+  ggtitle("Top 5 Highly Populated Counties")
+  
+#ggplot for Top 5 low populated counties 
+bottom_5 <- ggplot(bottom_counties) +
+  geom_col(
+    mapping = aes(x= county_name, y = total_crime,  fill= type_of_crime)
+  )  +
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+  xlab("County Names") +
+  ylab("Total Crime") +
+  guides(fill=guide_legend(title="Type Of Crime")) +
+  ggtitle("Lowest 5 Populated Counties")

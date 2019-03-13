@@ -1,9 +1,9 @@
 library(shiny)
-
 source("analysis_final.R")
 
 function(input, output, session) {
 #-------------------------------------------INTRO---------------------------------------------------
+     
      output$intro_page <- renderText({
           p <- "<p>The two data sets that we utilized for this presentation are rent prices by county and crime rates by county. The rent value data comes from Zillow,
           and online real estate database company. There are a lot different data sets that Zillow provides which can be found on their website (link the website here).
@@ -101,8 +101,8 @@ function(input, output, session) {
           t <- fav_crime_by_rent
           t
      })
-     output$table_analysis <- renderText({
-          p <- paste("<p>The below table shows the most popular crime per each category of rent prices, relative to the average crime rate
+     output$table_analysis1 <- renderText({
+          p <- paste("<p>The table to the right shows the most popular crime per each category of rent prices, relative to the average crime rate
                per each crime. To find this, the following procedure was used:</p>
                <ul>
                <li>First, the total crime per each county is divided by the population of the county, in order to make the number of occurances per 
@@ -110,7 +110,12 @@ function(input, output, session) {
                <li>Next, the average and standard deviation of each crime is found, using the data from each rent bracket.</li>
                <li>Then, a z-score is assigned to each crime for every rent bracket, using the averages and standard deviations assigned above</li>
                <li>Finally, for each rent bracket, the highest z-score is picked out of all the crimes, and this is decidedly the most popular type of 
-               crime.</li></ul><p>
+               crime.</li></ul><p><br>")
+          p
+     })
+     
+     output$table_analysis2 <- renderText({
+          p <- paste("<p>
                Note: this", strong("does not"), "mean that each category has the most of
                this crime out of all the categories,", strong("nor"), "does it mean that it is the most popular 
                crime out of this particular bracket of rent prices. What it", strong("does"), "mean, however,
@@ -123,7 +128,7 @@ function(input, output, session) {
                more prevalent than others, like arson. If this table purely showed the most common type of crime commited in each rent bracket, 
                they would most likely all be larceny. Therefore, in order to find data with more insight, the relatively highest type of crime is found
                using z-scores, with the methodology described above.
-               </p><br>")
+               </p>")
           p
      })
      
@@ -161,7 +166,7 @@ function(input, output, session) {
      })
      
      output$q2_analysis <- renderText({
-          p <- "<h4>Table Analysis</h4>
+          p <- "
                <p>This question is complicated, and thus requires a complicated response. When analyzing the variations of crime across a range of rent values, we are
                     not looking for a simple answer, but instead, hunting for potential trends and connections between the two. Overall this analysis brought some interesting
                     conclusions, between the overt information provided by the various rent versus crime plots, and the subtle, almost hidden information provided by the table.
@@ -193,5 +198,23 @@ function(input, output, session) {
           p 
      })
     
-
+     output$table_city_vs_crimes <- renderTable({
+       filtered_table <- population_vs_types__of_crime %>%
+        filter(population >= input$population[1], population <= input$population[2]) %>%
+        filter(type_of_crime == input$crime_types) %>%
+         head(10)
+       filtered_table
+     })
+    
+      output$Top_counties <- renderPlot ({
+          top_5
+     })
+      
+      output$Bottom_counties <- renderPlot ({
+          bottom_5
+        
+      })
+      
 }
+
+
