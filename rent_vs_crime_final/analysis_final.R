@@ -4,19 +4,10 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-<<<<<<< HEAD
 #<<<<<<< HEAD
-#<<<<<<< HEAD:analysis_final.R
-#<<<<<<< HEAD
-#setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
+
 #=======
-# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/")
-#>>>>>>> cda7593a1384715ae2d1c8db185014c87b6100e9
-#=======
-# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
-#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
-=======
->>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
+#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 
@@ -140,7 +131,11 @@ population <- crime_vs_rent %>%
 
 population_range <- range(population$population, na.rm = TRUE)
 
+crime_rate_per_100000_range <- range(population$crime_rate_per_100000, na.rm = TRUE)
  
+
+
+
 #find the top 5 populated counties 
 top_counties <- crime_vs_rent %>%
   select(-rent_value) %>%
@@ -154,6 +149,13 @@ top_counties <- crime_vs_rent %>%
   arrange(desc(population))%>%
   head(40)
 
+top_counties_stats <- top_counties %>%
+  group_by(year) %>%
+  summarise(
+    Average_crime_rates_per_1000000 = mean_NA(crime_rate_per_100000),
+    Median_crime_rates_per_1000000 = median(crime_rate_per_100000)
+  )
+
 #finds the top 5 lowest populated counties 
 bottom_counties <- crime_vs_rent %>%
   select(-rent_value) %>%
@@ -165,8 +167,15 @@ bottom_counties <- crime_vs_rent %>%
   ) %>%
   filter(population == min(population)) %>%
   arrange(population) %>%
-  head(40)
-  
+  head(40) 
+
+#Used this to write Analysis
+bottom_5_stats <- bottom_counties %>%
+  group_by(year) %>%
+  summarise(
+    Average_crime_rate = mean_NA(crime_rate_per_100000),
+    Median_crime_rate = median(crime_rate_per_100000)
+  )
   
   
 #ggplot for Top 5 highly populated counties 
@@ -174,11 +183,21 @@ top_5 <- ggplot(top_counties) +
   geom_col(
     mapping = aes(x= county_name, y = amount_of_crime,  fill= type_of_crime)
   )  +
-  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
+    theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
   xlab("County Names") +
   ylab("Total Crime") +
   guides(fill=guide_legend(title="Type Of Crime")) +
-  ggtitle("Top 5 Highly Populated Counties")
+  ggtitle("Top 5 Highly Populated Counties") 
+
+top_5
+
+# ggplot(data = top_counties) +
+# geom_point(mapping = aes(x= population, y = total_crime, color = county_name))+
+# 
+# ggplot(data = bottom_counties) +
+#   geom_point(mapping = aes( x = population, y = total_crime, color = county_name))
+
+
   
 #ggplot for Top 5 low populated counties 
 bottom_5 <- ggplot(bottom_counties) +
@@ -190,3 +209,9 @@ bottom_5 <- ggplot(bottom_counties) +
   ylab("Total Crime") +
   guides(fill=guide_legend(title="Type Of Crime")) +
   ggtitle("Lowest 5 Populated Counties")
+
+bottom_5
+
+
+
+  

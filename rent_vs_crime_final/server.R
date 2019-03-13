@@ -1,13 +1,11 @@
 library(shiny)
 source("analysis_final.R")
-<<<<<<< HEAD
 #<<<<<<< HEAD
 
-#=======
 # setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
 #>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
-=======
->>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
+#=======
+#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 
 function(input, output, session) {
 #-------------------------------------------INTRO---------------------------------------------------
@@ -173,11 +171,9 @@ function(input, output, session) {
           p
      })
      
-<<<<<<< HEAD
 #<<<<<<< HEAD
-     output$q1text <- renderText({
-          p <- "This is output generated text. Fill in later"
-=======
+
+#=======
      output$q2_analysis <- renderText({
           p <- "
                <p>This question is complicated, and thus requires a complicated response. When analyzing the variations of crime across a range of rent values, we are
@@ -203,7 +199,7 @@ function(input, output, session) {
                     However when you account for large population counties with higher rent, our conclusion matches up better with our hypothesis, which estimated that cities would play a factor.
                </p>
                "
->>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
+
           p
      })
      
@@ -215,8 +211,8 @@ function(input, output, session) {
      output$table_city_vs_crimes <- renderTable({
        filtered_table <- population_vs_types__of_crime %>%
         filter(population >= input$population[1], population <= input$population[2]) %>%
-        filter(type_of_crime == input$crime_types) %>%
-         head(10)
+        filter(crime_rate_per_100000 >= input$crime_rates[1], crime_rate_per_100000 <= input$crime_rates[2]) %>%
+         head(20)
        filtered_table
      })
     
@@ -229,13 +225,43 @@ function(input, output, session) {
         
       })
       
+      output$q3text <- renderText({
+       intro <-  "<h5>Introduction</h5>
+       <p>The purpose of asking this question was to see if crime rates and type of crimes varied throughout 
+highly populated areas verses sparsely populated areas. Comparing the different areas allows people to see the
+ranging crime indexes given the population density. People can also examine how the most frequent category of 
+crimes may differ from a rural area versus an urban area which one could infer from the comparison of population
+concentration. In order to show the user how crime rates and types of crime change the user is able to filter 
+out the population number and crime rate per 100,000 people by using sliders. This lets the user focus on crime rates and population density while also see other interesting information that data table has about the types of crime and frequency of that crime by county. To further speculate the data, in the plot one and plot two tabs have bar graphs showing the range of the different types of crime from the top five highly populated counties and the top five least populated counties. 
+"
+       intro
+      })
+      
+      output$q3analysis <- renderText({
+       analysis<-" 
+        Large population counties have higher crime rates than lower population counties. The top five highly 
+        populated counties had a range of crime rate per 100,000 people from 368.67 (San Diego County, CA) to 696.10 
+        (Harris County, TX). The lowest populated areas had a crime rate range of 65.70 (Grundy County, IL) to 497.54 
+        (Geary County, KS)  the mean for the lower populated areas is 196.62. The mean for the higher populated areas
+        is 503.29. The most frequent type of was Larceny, but this is not shocking because Larceny is the least severe 
+        of crimes in our data table. The frequency between the types of crimes remained the same for most of the
+        categories comparing them the different populated areas, however there was a lot more car theft for the highly populated. 
+        Although, nothing significant was found for the types of crime between the specific highest and lowest populated areas. 
+        It's still important to look crime rates and the different type of crimes because rate could increase for a specific 
+        crime while other specific crime rates decrease. It's important for families and people who are searching to find a home to know that the environment their loved ones and children will be around. 
+        It's also important to recognize that highly populated areas (cities) can be dangerous, and when looking for a place to rent people should take that into consideration. 
+        "
+      })
+      
+      
+      
 }
 
-<<<<<<< HEAD
+
+
 #=======
 
 #}
 #>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
-=======
 
->>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
+
