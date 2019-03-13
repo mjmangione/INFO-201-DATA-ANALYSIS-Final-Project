@@ -1,13 +1,9 @@
 source("analysis_final.R")
 library(shiny)
-#<<<<<<< HEAD
-
-#=======
 library(shinythemes)  
 
 crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
 year_range <- range(2010:2019)
-#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 
 navbarPage(theme = shinytheme("flatly"), "Rent vs Crime", 
            tabPanel("Introduction", h2(class = "header", "Rent and Crime by County"),
@@ -83,7 +79,8 @@ navbarPage(theme = shinytheme("flatly"), "Rent vs Crime",
                                               ),
                                               mainPanel(
                                                   h4(textOutput("plot_title")),
-                                                  plotOutput("plot_crime"))
+                                                  plotOutput("plot_crime"),
+                                                  htmlOutput("plot2_text"))
                                               )
                                          ),
                                 tabPanel("Analysis", h4(class = "header", "Introduction"),
@@ -96,7 +93,10 @@ navbarPage(theme = shinytheme("flatly"), "Rent vs Crime",
            tabPanel("Question 3",
                     h3("How do Large Population Counties Compare to the Rest of the US in Terms of Their Crime Rates?"),
                     tabsetPanel(type = "tabs",
-                                tabPanel("Intro", textOutput("q3text")),
+                                tabPanel("Intro", h4(class= "header", "Introduction"),
+                                        fluidRow(
+                                             column(1), column(10, htmlOutput("q3text")), column(1)
+                                )),
                                 tabPanel("Plot 1", plotOutput("Top_counties")),
                                 tabPanel("Plot 2", plotOutput("Bottom_counties")),
                                 tabPanel("Table", 
@@ -120,11 +120,18 @@ navbarPage(theme = shinytheme("flatly"), "Rent vs Crime",
                                               )
                                          )
                                 ),
-                                tabPanel("Analysis", textOutput("q3analysis"))
+                                tabPanel("Analysis", h4(class = "header", "Analysis"),
+                                         fluidRow(column(1), column(10, htmlOutput("q3analysis")), column(1))
+                                )
                     )
                     
            ),
-           tabPanel("Conclusion"),
+           tabPanel("Conclusion",
+                    h2(class = "header", "Conclusion"),
+                    fluidRow(
+                         column(1), column(10, htmlOutput("conclusion")), column(1)
+                    )
+           ),
            includeCSS("main.css")
 )
 

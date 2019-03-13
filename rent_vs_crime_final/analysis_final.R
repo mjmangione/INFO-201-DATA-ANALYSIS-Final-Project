@@ -4,10 +4,7 @@ library(ggplot2)
 library(usmap)
 library(tools)
 
-#<<<<<<< HEAD
 
-#=======
-#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 crime_rates_county <- read.csv("data/crime_data_w_population_and_crime_rate.csv", stringsAsFactors = FALSE) 
 rent_price <- read.csv("data/county_median_rental_price.csv", stringsAsFactors = FALSE)
 

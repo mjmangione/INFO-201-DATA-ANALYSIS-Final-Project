@@ -1,21 +1,15 @@
 library(shiny)
 source("analysis_final.R")
-#<<<<<<< HEAD
-
-# setwd("C:/Users/Matt/Documents/INFO2012/final_assignment/rent_vs_crime_final/")
-#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
-#=======
-#>>>>>>> e198e33cf7257fbc81dad7e5920f26ba2a886532
 
 function(input, output, session) {
 #-------------------------------------------INTRO---------------------------------------------------
      
      output$intro_page <- renderText({
-          p <- "<p>The two data sets that we utilized for this presentation are rent prices by county and crime rates by county. The rent value data comes from Zillow,
-          and online real estate database company. There are a lot different data sets that Zillow provides which can be found on their website (link the website here).
-          Specifically, we used data provided for average rental listings and set the geography filter to county. The crime rate data come from Kaggle, an online community
+          p <- paste("<p>The two data sets that we utilized for this presentation are rent prices by county and crime rates by county. The rent value data comes from Zillow,
+          an online real estate database company. There are a lot of different data sets that Zillow provides which can be found on", a(href= "https://www.zillow.com/research/data/","their website"),".
+          Specifically, we used data provided for average rental listings, and set the geography filter to county. The crime rate data comes from Kaggle, an online community
           that allows users to create and share data sets. We were able to find a dataset in Kaggle which showed crime rates by county in the US. More information about the
-          data can be found here (link to Kaggle website).
+          data can be found", a(href="https://www.kaggle.com/datasets", "here"),".
           </p><p>
           One thing to note about the data is that Zillow does not provide rental statistics for every county in the US. However, we believe that we still have a large 
           enough sample size of counties to have meaningful results. It should also be noted that the reason for Zillow not providing statistics for all counties could be due
@@ -31,8 +25,8 @@ function(input, output, session) {
               <li>How do large population counties compare to the rest of the US in terms of their crime rates?</li>
           </ol>
           </p>
-          "
-          
+          ")
+          p
      })
      
 #--------------------------------------------Q1---------------------------------------------------     
@@ -171,9 +165,20 @@ function(input, output, session) {
           p
      })
      
-#<<<<<<< HEAD
-
-#=======
+     output$plot_title <- renderText({
+          p <- paste("How", input$crime, "Per County Population Compares to its Median Rent Price")
+          p 
+     })
+     
+     output$plot2_text <- renderText({
+          p <- paste("<br><h4>Methodology</h4><p>The above plot has similar methodology to the table described in the previous tab.
+               Each plot value compares the ratio of", input$crime, " to the county's population, to the median rent value of the county. A regression line is created using these plots,
+               to show the overall trend of this comparison. This plot differs to the table because it does not bracket the counties based upon their median rent,
+               this way, it shows the exact amount of each county's median rent, while also showing the general trends, due to the line of best fit.
+               </p><br><br>")
+          p
+     })
+     
      output$q2_analysis <- renderText({
           p <- "
                <p>This question is complicated, and thus requires a complicated response. When analyzing the variations of crime across a range of rent values, we are
@@ -202,12 +207,7 @@ function(input, output, session) {
 
           p
      })
-     
-     output$plot_title <- renderText({
-          p <- paste("How", input$crime, "Per County Population Compares to its Median Rent Price")
-          p 
-     })
-    
+#------------------------------------------------Q3-------------------------------------------------------
      output$table_city_vs_crimes <- renderTable({
        filtered_table <- population_vs_types__of_crime %>%
         filter(population >= input$population[1], population <= input$population[2]) %>%
@@ -226,14 +226,14 @@ function(input, output, session) {
       })
       
       output$q3text <- renderText({
-       intro <-  "<h5>Introduction</h5>
-       <p>The purpose of asking this question was to see if crime rates and type of crimes varied throughout 
-highly populated areas verses sparsely populated areas. Comparing the different areas allows people to see the
-ranging crime indexes given the population density. People can also examine how the most frequent category of 
-crimes may differ from a rural area versus an urban area which one could infer from the comparison of population
-concentration. In order to show the user how crime rates and types of crime change the user is able to filter 
-out the population number and crime rate per 100,000 people by using sliders. This lets the user focus on crime rates and population density while also see other interesting information that data table has about the types of crime and frequency of that crime by county. To further speculate the data, in the plot one and plot two tabs have bar graphs showing the range of the different types of crime from the top five highly populated counties and the top five least populated counties. 
-"
+       intro <-  "
+          <p>The purpose of asking this question was to see if crime rates and type of crimes varied throughout 
+          highly populated areas verses sparsely populated areas. Comparing the different areas allows people to see the
+          ranging crime indexes given the population density. People can also examine how the most frequent category of 
+          crimes may differ from a rural area versus an urban area which one could infer from the comparison of population
+          concentration. In order to show the user how crime rates and types of crime change the user is able to filter 
+          out the population number and crime rate per 100,000 people by using sliders. This lets the user focus on crime rates and population density while also see other interesting information that data table has about the types of crime and frequency of that crime by county. To further speculate the data, in the plot one and plot two tabs have bar graphs showing the range of the different types of crime from the top five highly populated counties and the top five least populated counties. 
+          "
        intro
       })
       
@@ -252,16 +252,17 @@ out the population number and crime rate per 100,000 people by using sliders. Th
         It's also important to recognize that highly populated areas (cities) can be dangerous, and when looking for a place to rent people should take that into consideration. 
         "
       })
-      
-      
-      
+#---------------------------------------------CONC-------------------------------------------------
+      output$conclusion <- renderText({
+           conc <- "Although we did find a correlation between rent prices and crime rates, this correlation does not necessarily imply causation.
+           As was previously mentioned in the introduction, there are other factors that affect rental prices changing other than just crime rates in the area
+           (location, market inflation, etc.). Thus, we cannot implicitly conclude that a high crime rate <i>causes</i> rent values to decline or a low crime rate causes
+           rent values to increase. However, our analysis does support that there is a strong <i>correlation</i> between the two. For all of the questions we analyzed,
+           we consistently found that rent prices and crime rates go hand in hand. We took a look at areas with high and low crime rates and how rent was affected
+           in those areas. Moreover, we found a relationship between rent prices and the types of crime most likely to be committed according to those rent prices,
+           and how crime rates differ based on the population of a county. Overall, we believe that we were able to merge these two data sets and produce <i>meaningful</i>
+           results that could be used in helping others."
+           conc
+      })
 }
-
-
-
-#=======
-
-#}
-#>>>>>>> c1709f4ee026788b33443c5212bcb9417febdb55
-
 
