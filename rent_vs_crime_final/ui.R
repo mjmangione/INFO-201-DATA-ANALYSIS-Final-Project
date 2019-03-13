@@ -1,8 +1,9 @@
 library(shiny)
-crime_list <- c("Murder", "Rape", "Robbery", "Aggravated Assault", "Burglary", "Larceny", "Car Theft", "Arson")
+crime_list <- c("Murder", "Rape", "Robbery", "Aggravated_Assault", "Burglary", "Larceny", "Car_Theft", "Arson")
 
 navbarPage("Rent vs Crime 2",
            tabPanel("Question 1",
+                    h3("What is the most popular type of crime per each grouping of Rent?"),
                     sidebarLayout(
                          sidebarPanel(
                               radioButtons("plotType", "Plot type",
@@ -20,17 +21,33 @@ navbarPage("Rent vs Crime 2",
            ),
 #-------------------------------------------------------------------------------------------------
            tabPanel("Question2",
-                    sidebarLayout(
-                         sidebarPanel(
-                              selectInput("crime", "Type of Crime:", crime_list, "MURDER")
-                         ),
-                         mainPanel(
-                              tabsetPanel(type = "tabs",
-                                          tabPanel("about", textOutput("q2text")),
-                                          tabPanel("plot", plotOutput("plot_crime")),
-                                          tabPanel("table", tableOutput("table_fav_crime"))
-                              )
-                         )
+                    h3("What is the most popular type of crime per each bracket of rent prices?"),
+                    tabsetPanel(type = "tabs",
+                                tabPanel("intro", htmlOutput("intro2")),
+                                tabPanel("table", 
+                                         sidebarLayout(
+                                             sidebarPanel(
+                                                  
+                                             ),
+                                             mainPanel(
+                                                  h4("Methodology:"),
+                                                  htmlOutput("table_analysis"),
+                                                  h4("Most Popular Crime, Relative to Averages:"),
+                                                  tableOutput("table_fav_crime")
+                                             )
+                                         )
+                                ),
+                                tabPanel("plot",
+                                         sidebarLayout(
+                                              sidebarPanel(
+                                                   selectInput("crime", "Type of Crime to Plot:", crime_list, "MURDER")
+                                              ),
+                                              mainPanel(
+                                                  h4(textOutput("plot_title")),
+                                                  plotOutput("plot_crime"))
+                                              )
+                                         ),
+                                tabPanel("analysis")
                     )
            ),
 #----------------------------------------------------------------------------------------

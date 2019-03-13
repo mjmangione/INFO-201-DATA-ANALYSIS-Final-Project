@@ -88,9 +88,9 @@ ggplot(data = crime_trends_vs_rent) +
 
 crime_per_category <- crime_vs_rent_2016 %>% 
      group_by(rent_category) %>% 
-     summarize(ave_murder = mean_NA(MURDER/population), ave_rape = mean_NA(RAPE/population), ave_robbery = mean_NA(ROBBERY/population),
-               ave_agrasslt = mean_NA(AGASSLT/population), ave_burg = mean_NA(BURGLRY/population), ave_larc = mean_NA(LARCENY/population),
-               ave_gta = mean_NA(MVTHEFT/population), ave_arson = mean_NA(ARSON/population))
+     summarize(Murder = mean_NA(MURDER/population), Rape = mean_NA(RAPE/population), Robbery = mean_NA(ROBBERY/population),
+               Aggravated_Assault = mean_NA(AGASSLT/population), Burglary = mean_NA(BURGLRY/population), Larceny = mean_NA(LARCENY/population),
+               Car_Theft = mean_NA(MVTHEFT/population), Arson = mean_NA(ARSON/population)) 
 
 rearranged_crimes <- crime_per_category %>% 
      gather(key = crime, value = crime_by_pop, -rent_category) 
@@ -100,8 +100,10 @@ ave_crime <- rearranged_crimes %>%
 fav_crime_by_rent <- left_join(rearranged_crimes, ave_crime, by = "crime") %>% 
      mutate(crime_diff = (crime_by_pop - average)/stddev) %>%
      group_by(rent_category) %>% 
-     filter(crime_diff == max(crime_diff))
-
+     filter(crime_diff == max(crime_diff)) %>% 
+     select(Rent = rent_category, `Most Popular Crime` = crime) %>% 
+     arrange(Rent)
+View(fav_crime_by_rent)
 #-----------------------------------------------------------------#
 
 # below is the county map for plotting stuff
