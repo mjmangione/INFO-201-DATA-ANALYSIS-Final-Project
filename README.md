@@ -1,5 +1,5 @@
-# How Does Crime Correlate to Rent Costs Across the United States?
-### David Shtukin, Matt Mangione, Amanda Wikramanayake
+## How Does Crime Correlate to Rent Costs Across the United States?
+#### David Shtukin, Matt Mangione, and Amanda Wikramanayake
 
 This repository contains an analysis of the correlation between crime rates and rent prices for different counties in the US. Specifically, we seek to answer the following questions in order to guide our understanding of this relationship.
 
